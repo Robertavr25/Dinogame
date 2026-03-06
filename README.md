@@ -55,7 +55,3 @@ Obstacle Class: A base class for cacti and birds, handling their movement and sc
 init_game: Resets all variables, scores, and obstacle lists for a new session.
 
 main (Game Loop): The heart of the program that handles events, updates positions, checks for collisions, and renders graphics at 60 FPS.
-
-## Dinogame Logic:
-
-The jump mechanic follows the formula:$$y_{pos} = y_{pos} + (velocity \cdot \Delta t)$$Where velocity is modified by gravity:$$velocity = velocity + (gravity \cdot \Delta t)$$
