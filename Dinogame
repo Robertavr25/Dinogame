@@ -1,7 +1,6 @@
 import pygame
 import random
 
-# 1. Inițializarea și Constantele
 pygame.init()
 WIDTH, HEIGHT = 1200, 600
 GROUND_HEIGHT = HEIGHT - 100
@@ -14,7 +13,6 @@ pygame.display.set_caption("Dino Game - Chrome Style")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("Arial", 24)
 
-# 2. Clasa Dinosaur
 class Dinosaur:
     def __init__(self):
         self.x = 50
@@ -44,7 +42,6 @@ class Dinosaur:
         self.y_velocity += self.gravity * dt
         self.y += self.y_velocity * dt
 
-        # Verificăm coliziunea cu solul
         if self.y >= GROUND_HEIGHT - self.height:
             self.y = GROUND_HEIGHT - self.height
             self.y_velocity = 0
@@ -58,7 +55,6 @@ class Dinosaur:
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
-# 3. Clasa Obstacle
 class Obstacle:
     def __init__(self, x, velocity):
         self.x = x
@@ -70,7 +66,7 @@ class Obstacle:
         if self.type == "cactus":
             self.y = GROUND_HEIGHT - self.height
         else:
-            # Păsările apar la înălțimi diferite
+          
             self.y = GROUND_HEIGHT - 70 # Pasăre joasă (necesită săritură sau aplecare)
 
     def update(self, dt):
@@ -83,11 +79,9 @@ class Obstacle:
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
-# 4. Funcția de Resetare a Jocului
 def init_game():
     return Dinosaur(), [], 0, 500  # dino, obstacles, score, current_velocity
 
-# 5. Game Loop
 def main():
     dino, obstacles, score, velocity = init_game()
     high_score = 0
@@ -120,10 +114,7 @@ def main():
                     dino.duck(False)
 
         if not game_over:
-            # Update Dino
             dino.update(dt)
-            
-            # Update Obstacole & Generare
             if len(obstacles) == 0 or obstacles[-1].x < WIDTH - random.randint(300, 600):
                 obstacles.append(Obstacle(WIDTH, velocity))
 
@@ -131,28 +122,22 @@ def main():
                 obs.update(dt)
                 if obs.x < -50:
                     obstacles.remove(obs)
-                
-                # Verificare Coliziune
                 if dino.get_rect().colliderect(obs.get_rect()):
                     game_over = True
                     if score > high_score:
                         high_score = score
 
-            # Update Scorie și Dificultate
             score += dt * 10
             velocity += dt * 2 # Jocul devine mai rapid treptat
 
-        # Desenare
         screen.fill(WHITE)
         
-        # Desenare Sol
         pygame.draw.line(screen, BLACK, (0, GROUND_HEIGHT), (WIDTH, GROUND_HEIGHT), 2)
         
         dino.draw(screen)
         for obs in obstacles:
             obs.draw(screen)
 
-        # UI
         score_txt = font.render(f"Score: {int(score)}  High Score: {int(high_score)}", True, BLACK)
         screen.blit(score_txt, (20, 20))
 
